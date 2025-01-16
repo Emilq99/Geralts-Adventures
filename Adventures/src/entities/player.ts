@@ -13,6 +13,8 @@ export class Player extends Entity {
     enemies: Entity[];
     target: any;
     isAttacking: boolean;
+    playerHealthBar: Phaser.GameObjects.Graphics;
+    enemyHealthBar: Phaser.GameObjects.Graphics;
     constructor(scene: Phaser.Scene, x: number, y: number, texture: SpriteType) {
         super(scene, x, y, texture.base, SPRITES.PLAYER.base);
 
@@ -27,8 +29,9 @@ export class Player extends Entity {
         this.createAnimation('left', texture.base, 12, 14, anims, animsFrameRate);
         this.createAnimation('right', texture.base, 24, 26, anims, animsFrameRate);
         this.createAnimation('up', texture.base, 36, 38, anims, animsFrameRate);
-        this.createAnimation('fight', texture.base, 3, 6, anims, animsFrameRate, 0);
+      //this.createAnimation('fight', texture.fight, 3, 6, anims, animsFrameRate, 0);
 
+        this.drawPlayerHealthBar();
         this.on('animationcomplete', () => {
             this.isAttacking = false;
         }) 
@@ -49,6 +52,27 @@ export class Player extends Entity {
             frameRate,
             repeat,
         })
+    }
+
+    private drawPlayerHealthBar() {
+        this.playerHealthBar = this.scene.add.graphics();
+        this.playerHealthBar.setScrollFactor(0);
+        this.drawHealthBar(this.playerHealthBar, 10, 10, this.health / 100)
+    }
+
+    private drawEnemyHealthBar(target) {
+        this.enemyHealthBar = this.scene.add.graphics();
+        this.enemyHealthBar.setScrollFactor(0);
+        this.drawHealthBar(this.playerHealthBar, 10, 30, target.health / 100)
+        
+    }
+
+    private drawHealthBar(grachics, x, y, percentage) {
+        grachics.fillStyle(0x000000, 1);
+        grachics.fillRect(x, y, 100, 10)
+
+        grachics.fillStyle(0xff0000, 1);
+        grachics.fillRect(x, y, 100 * percentage, 10)
     }
 
     setEnemies(enemies: Entity[]) {
@@ -77,6 +101,7 @@ export class Player extends Entity {
             this.play('fight');
             this.setVelocity(0,0);
             this.attack(target)
+            this.drawEnemyHealthBar(target);
         })
     }
     
@@ -90,6 +115,7 @@ export class Player extends Entity {
 
     update(delta: number) {
         const keys = this.scene.input.keyboard.createCursorKeys();
+        this.drawPlayerHealthBar();
 
         if (keys.up.isDown) {
             this.play('up', true);

@@ -11,6 +11,9 @@ export class World extends Phaser.Scene {
     boarGosha: Enemy;
     boarYarik: Enemy;
     boarDaddy: Enemy;
+    killText: Phaser.GameObjects.Text;
+    killsCounter: number = 0;
+    killcCounter: number;
     constructor() {
         super('WorldScene');
     }
@@ -42,7 +45,6 @@ export class World extends Phaser.Scene {
 
         this.player = new Player(this, 400, 400, SPRITES.PLAYER);
         this.player.setCollideWorldBounds(true);
-        this.player.setEnemies([this.boar, this.boarSecond]);
 
         this.boar = new Enemy(this, 600, 250, SPRITES.BOAR.base);
         this.boar.setPlayer(this.player);
@@ -61,6 +63,8 @@ export class World extends Phaser.Scene {
 
         this.boarSecond = new Enemy(this, 800, 400, SPRITES.BOAR.base);
         this.boarSecond.setPlayer(this.player);
+
+        this.player.setEnemies([this.boar, this.boarSecond, this.boarDaddy, this.boarYarik, this.boarGosha, this.boarMatvienko]);
         
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);

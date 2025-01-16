@@ -28,7 +28,7 @@ body {
 }
 
 .menu button {
-  background: linear-gradient(135deg, #4CAF50, #45a049);
+  background: linear-gradient(135deg, #0026ff, #0026ff);
   color: white;
   border: none;
   padding: 15px 30px; 
@@ -41,7 +41,7 @@ body {
 }
 
 .menu button:hover {
-  background: linear-gradient(135deg, #45a049, #4CAF50); 
+  background: linear-gradient(135deg, #0026ff, #0026ff); 
   transform: scale(1.05); 
 }
 
