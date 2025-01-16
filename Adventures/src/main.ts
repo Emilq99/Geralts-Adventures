@@ -22,14 +22,22 @@ toggleMenuButton.addEventListener('click', () => {
   menu.classList.toggle('hidden');
 });
 
+let game: Phaser.Game | null = null; 
+
 startGameButton.addEventListener('click', () => {
   console.log('Start Game clicked');
-  menu.classList.add('hidden'); 
-  new Phaser.Game({
+  menu.classList.add('hidden');
+
+  if (game) {
+    game.scene.start('main'); 
+    return;
+  }
+
+  game = new Phaser.Game({
     width: 1000,
     height: 600,
     title: 'Adventures',
-    scene: scenes, 
+    scene: scenes,
     backgroundColor: '#000',
     physics: {
       default: 'arcade',
@@ -43,6 +51,8 @@ startGameButton.addEventListener('click', () => {
     },
     pixelArt: true,
   });
+
+  startGameButton.innerText = 'Continue';
 });
 
 optionsButton.addEventListener('click', () => {
@@ -51,4 +61,10 @@ optionsButton.addEventListener('click', () => {
 
 quitButton.addEventListener('click', () => {
   console.log('Quit clicked');
+  menu.classList.remove('hidden'); 
+  if (game) {
+    game.destroy(true); 
+    game = null;
+  }
+  startGameButton.innerText = 'Start Game'; 
 });

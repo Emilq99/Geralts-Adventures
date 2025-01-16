@@ -11,9 +11,9 @@ export class World extends Phaser.Scene {
     boarGosha: Enemy;
     boarYarik: Enemy;
     boarDaddy: Enemy;
-    killText: Phaser.GameObjects.Text;
+    killsText: Phaser.GameObjects.Text;
     killsCounter: number = 0;
-    killcCounter: number;
+
     constructor() {
         super('WorldScene');
     }
@@ -26,15 +26,15 @@ export class World extends Phaser.Scene {
             frameHeight: SIZES.PLAYER.HEIGHT
         })
 
-        this.load.spritesheet(SPRITES.PLAYER.fight, 'src/assets/characters/alliance-fight-small.png', {
-            frameWidth: SIZES.PLAYER.WIDTH,
-            frameHeight: SIZES.PLAYER.HEIGHT
-        })
+        this.load.spritesheet('sword', 'src/assets/sword.png', {
+            frameWidth: 16,
+            frameHeight: 16
+        });   
         
         this.load.spritesheet(SPRITES.BOAR.base, 'src/assets/characters/boar.png', {
             frameWidth: SIZES.PLAYER.WIDTH,
             frameHeight: SIZES.PLAYER.HEIGHT
-        })
+        });
     }
 
     create () {
@@ -72,6 +72,9 @@ export class World extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.physics.add.collider(this.player, wallslayer);
         wallslayer.setCollisionByExclusion([-1]);
+
+        this.killsText = this.add.text(770, 10, `${this.killsCounter}`, { fontFamily: 'Calibri', fontSize: 16, color: '#ffffff'})
+        this.killsText.setScrollFactor(0); 
     }
 
     update(_: number, delta: number): void {
@@ -82,5 +85,6 @@ export class World extends Phaser.Scene {
         this.boarMatvienko.update();
         this.boarSecond.update();
         this.boarYarik.update();
+        this.killsText.setText(`${this.killsCounter}`);
     }
 } 

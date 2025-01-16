@@ -1,3 +1,4 @@
+import { World } from "../scenes/world";
 import { Entity } from "./entity";
 
 export class Enemy extends Entity {
@@ -85,11 +86,13 @@ export class Enemy extends Entity {
     }
 
     diactivate() {
+        const scene = this.scene as World;
         this.stopCycleTween();
         this.setPosition(this.initialPosition.x, this.initialPosition.y);
         this.setVisible(false);
         this.isAlive = false;
         this.destroy();
+        scene.killsCounter += 1;
     }
 
     update() {
